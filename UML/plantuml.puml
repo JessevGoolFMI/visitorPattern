@@ -43,6 +43,8 @@ namespace main {
 
     }
     class ReportGeneratorVisitor << (S,Aquamarine) >> {
+        - mu sync.Mutex
+
         + VisitCompressor(c *Compressor) 
         + VisitDispenser(d *Dispenser) 
 
