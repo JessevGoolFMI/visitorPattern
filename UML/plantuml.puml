@@ -1,0 +1,60 @@
+@startuml
+namespace main {
+    class BaseModule << (S,Aquamarine) >> {
+        + ControlData *ControlData
+
+    }
+    class Compressor << (S,Aquamarine) >> {
+        + Accept(visitor ModuleVisitor) 
+
+    }
+    class CompressorData << (S,Aquamarine) >> {
+        + ValueX int
+        + ValueY float64
+        + SomethingElse string
+
+    }
+    class ControlCore << (S,Aquamarine) >> {
+    }
+    class ControlData << (S,Aquamarine) >> {
+        - once sync.Once
+
+        + Data <font color=blue>map</font>[string]<font color=blue>interface</font>{}
+
+    }
+    class Dispenser << (S,Aquamarine) >> {
+        + Accept(visitor ModuleVisitor) 
+
+    }
+    class DispenserData << (S,Aquamarine) >> {
+        + ValueA int
+        + ValueB float64
+        + SomethingElse EmbeddedData
+
+    }
+    class EmbeddedData << (S,Aquamarine) >> {
+        + Id string
+        + Payload []byte
+
+    }
+    interface ModuleVisitor  {
+        + VisitCompressor( *Compressor) 
+        + VisitDispenser( *Dispenser) 
+
+    }
+    class ReportGeneratorVisitor << (S,Aquamarine) >> {
+        + VisitCompressor(c *Compressor) 
+        + VisitDispenser(d *Dispenser) 
+
+    }
+}
+"main.BaseModule" *-- "extends""main.Compressor"
+"main.BaseModule" *-- "extends""main.ControlCore"
+"main.BaseModule" *-- "extends""main.Dispenser"
+
+"main.ModuleVisitor" <|-- "implements""main.ReportGeneratorVisitor"
+
+"main.BaseModule""uses" o-- "main.ControlData"
+"main.DispenserData""uses" o-- "main.EmbeddedData"
+
+@enduml
